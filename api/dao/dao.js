@@ -52,12 +52,14 @@ function init() {
     model.Porteiro  = conexao.import('./modelo/porteiro.js');
     model.Condomino  = conexao.import('./modelo/condomino.js');
     model.Pessoa = conexao.import('./modelo/pessoa.js');
-    
+    model.Visita = conexao.import('./modelo/visita.js');
+
     // Arquivos
     require('./modelo/condomino.js').initRelations();
     require('./modelo/porteiro.js').initRelations();
     require('./modelo/usuario.js').initRelations(); 
-    require('./modelo/pessoa.js').initRelations();   
+    require('./modelo/pessoa.js').initRelations();  
+    require('./modelo/visita').initRelations(); 
 
     return model;
 }
