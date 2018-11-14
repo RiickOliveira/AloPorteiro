@@ -4,7 +4,7 @@ var pg = require('pg');
 
 /// Conexao do sequelize
 let Sequelize   = require('sequelize'),
-    conexao     = new Sequelize('aula', 'postgres', '123456789',
+    conexao     = new Sequelize('AloPorteiro', 'postgres', '123456789',
     {
         host: '127.0.0.1',
         port:5432,
@@ -48,12 +48,16 @@ function init() {
     
     
 	// Modelos
+    model.Usuario = conexao.import('./modelo/usuario.js');
+    model.Porteiro  = conexao.import('./modelo/porteiro.js');
+    model.Condomino  = conexao.import('./modelo/condomino.js');
     model.Pessoa = conexao.import('./modelo/pessoa.js');
-    model.Venda  = conexao.import('./modelo/venda.js');
     
     // Arquivos
-    require('./modelo/pessoa.js').initRelations();
-    require('./modelo/venda.js').initRelations();    
+    require('./modelo/condomino.js').initRelations();
+    require('./modelo/porteiro.js').initRelations();
+    require('./modelo/usuario.js').initRelations(); 
+    require('./modelo/pessoa.js').initRelations();   
 
     return model;
 }

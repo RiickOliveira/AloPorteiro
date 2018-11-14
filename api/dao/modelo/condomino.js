@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Venda', {
+    return sequelize.define('Condomino', {
         id: {
             type: DataTypes.INTEGER,
             field: 'id',
@@ -10,32 +10,33 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true,
             comment: 'Chave primaria'
         },
-        pessoaId: {
+        usuario_id: {
+            type: DataTypes.INTEGER,
+            field: 'usuario_id',
+            allowNull: false,
+            comment: 'tipo do usuario'
+        },        
+        pessoa_id: {
             type: DataTypes.INTEGER,
             field: 'pessoa_id',
             allowNull: false,
-            comment: 'Cliente da venda'
-        },        
-        produto: {
-            type: DataTypes.STRING(40),
-            field: 'produto',
-            allowNull: false,
-            comment: 'Nome do produto vendido'
+            comment: 'Pessoa vinculada a tabela PESSOA'
         },
-        valor: {
-            type: DataTypes.DECIMAL(11,2),
-            field: 'valor',
+        endereco: {
+            type: DataTypes.STRING(80),
+            field: 'endereco',
             allowNull: false,
-            comment: 'Preço do produto vendido'
-        }
-        
-    }, {
+            comment: 'Senha'
+        },        
+    }, 
+    
+    {
         schema: 'public',
-        tableName: 'venda',
+        tableName: 'condomino',
         timestamps: false,
         name:{
-            singular:'venda',
-            plural  :'vendas'
+            singular:'condominos',
+            plural  :'condominos'
         }
     });
 };
