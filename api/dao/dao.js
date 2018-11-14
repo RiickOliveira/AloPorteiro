@@ -59,7 +59,7 @@ function init() {
     require('./modelo/porteiro.js').initRelations();
     require('./modelo/usuario.js').initRelations(); 
     require('./modelo/pessoa.js').initRelations();  
-    require('./modelo/visita').initRelations(); 
+    require('./modelo/visita.js').initRelations(); 
 
     return model;
 }
