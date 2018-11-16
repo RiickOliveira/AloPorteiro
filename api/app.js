@@ -31,10 +31,10 @@ app.use(function(req, res, next) {
 
 
 
-
+/*
+  Declaracao de mapeamento das rotas da api
+*/ 
 app.use('/api', rota);
-
-
 
 
 

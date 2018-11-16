@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Pessoa', {
+    return sequelize.define('Visita', {
         id: {
             type: DataTypes.INTEGER,
             field: 'id',
@@ -10,23 +10,23 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true,
             comment: 'Chave primaria'
         },
-        condomino_id: {
+        condominId: {
             type: DataTypes.INTEGER,
             field: 'condomino_id',
             allowNull: false,
         },        
-        pessoa_id: {
+        pessoaId: {
             type: DataTypes.INTEGER,
             field: 'pessoa_id',
             allowNull: false,
         },
-        data_hora_reserva: {
+        dataHoraReserva: {
             type: DataTypes.DATE,
             field: 'data_hora_reserva',
             allowNull: false,
-            comment: 'Dta nascimento'
+            comment: 'Data e hora do agendamento da visita'
         },                
-        nome_convidado: {
+        nomeConvidado: {
             type: DataTypes.STRING(60),
             field: 'nome_convidado',
             allowNull: false,
@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
                 }                
             }
         },
-        condomino_observacao: {
+        condominoObservacao: {
             type: DataTypes.STRING(120),
             field: 'condomino_observacao',
             allowNull: false,
@@ -49,7 +49,7 @@ module.exports = function(sequelize, DataTypes) {
                 }                
             }
         },
-        data_hora_expiracao: {
+        dataHoraExpiracao: {
             type: DataTypes.DATE,
             field: 'data_hora_expiracao',
             allowNull: false,
@@ -58,18 +58,19 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             field: 'situacao',
             allowNull: false,
+            comment: ''
         },
-        portaria_data_hora_chegada: {
+        portariaDataHoraChegada: {
             type: DataTypes.DATE,
             field: 'portaria_data_hora_chegada',
             allowNull: false,
         },
-        porteiro_id: {
+        porteiroId: {
             type: DataTypes.INTEGER,
             field: 'porteiro_id',
             allowNull: false,
         },              
-        portaria_observacao: {
+        portariaObservacao: {
             type: DataTypes.STRING(120),
             field: 'portaria_observacao',
             allowNull: false,
@@ -94,5 +95,29 @@ module.exports = function(sequelize, DataTypes) {
 
 module.exports.initRelations = function() {
     delete module.exports.initRelations; 
+
+    var dataContext = require('../dao');
+    var Visita = dataContext.Visita;
+    var Condomino = dataContext.Condomino;
+    var Pessoa = dataContext.Pessoa;
+    var Porteiro = dataContext.Porteiro;    
+
+    Visita.belongsTo(Pessoa, {
+        foreignKey: 'pessoa_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Visita.belongsTo(Porteiro, {
+        foreignKey: 'porteiro_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Visita.belongsTo(Condomino, {
+        foreignKey: 'condomino_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
 };
 

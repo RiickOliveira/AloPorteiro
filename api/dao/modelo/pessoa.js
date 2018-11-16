@@ -40,31 +40,31 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             comment: 'Digital unica de cada pessoa'
         },
-        endereco_logradouro: {
+        enderecoLogradouro: {
             type: DataTypes.STRING(80),
             field: 'endereco_logradouro',
             allowNull: false,
             comment: 'Endereco(rua/av) da pessoa'
         },
-        endereco_numero: {
+        enderecoNumero: {
             type: DataTypes.STRING(10),
             field: 'endereco_numero',
             allowNull: false,
             comment: 'Endereco(numero) da pessoa'
         },
-        endereco_bairro: {
+        enderecoBairro: {
             type: DataTypes.STRING(80),
             field: 'endereco_bairro',
             allowNull: false,
             comment: 'Endereco(bairro) da pessoa'
         },
-        endereco_cidade: {
+        enderecoCidade: {
             type: DataTypes.STRING(80),
             field: 'endereco_cidade',
             allowNull: false,
             comment: 'CIdade da pessoa'
         },
-        endereco_uf: {
+        enderecoUf: {
             type: DataTypes.STRING(2),
             field: 'endereco_uf',
             allowNull: false,

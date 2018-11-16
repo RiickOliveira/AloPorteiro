@@ -1,5 +1,5 @@
 var app = require('./app');
-var debug = require('debug')('api_aula:server');
+var debug = require('debug')('api_alo_porteiro:server');
 var http = require('http'),
     atob = require('atob'),
     btoa = require('btoa');
@@ -15,7 +15,7 @@ require('./dao/dao').init();
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3333');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**

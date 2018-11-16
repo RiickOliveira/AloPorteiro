@@ -1,15 +1,14 @@
 let rota = require('express').Router();
 
 
+let pessoaController = require('../recursos/pessoa.controller');
 
-let clienteRecurso = require('../recursos/cliente');
 
-
-rota.get('/cliente', clienteRecurso.carregaTudo);
-rota.get('/cliente/:id', clienteRecurso.carregaPorId);
-rota.post('/cliente', clienteRecurso.salva)
-rota.delete('/cliente/:id', clienteRecurso.exclui)
-rota.put('/cliente/:id', clienteRecurso.atualiza)
+rota.get('/pessoa', pessoaController.carregaTudo);
+rota.get('/pessoa/:id', pessoaController.carregaPorId);
+rota.post('/pessoa', pessoaController.salva)
+rota.delete('/pessoa/:id', pessoaController.exclui)
+rota.put('/pessoa/:id', pessoaController.atualiza)
 
 
 

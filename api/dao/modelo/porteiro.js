@@ -10,21 +10,21 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true,
             comment: 'Chave primaria'
         },
-        usuario_id: {
+        usuarioId: {
             type: DataTypes.INTEGER,
             field: 'usuario_id',
             allowNull: false,
-            comment: 'tipo do usuario'
+            comment: 'Usuario associado ao porteiro'
         },        
-        pessoa_id: {
+        pessoaId: {
             type: DataTypes.INTEGER,
             field: 'pessoa_id',
             allowNull: false,
-            comment: 'Pessoa vinculada a liberação'
+            comment: 'Pessoa associada ao porteiro'
         }        
     }, {
         schema: 'public',
-        tableName: 'Porteiro',
+        tableName: 'porteiro',
         timestamps: false,
         name:{
             singular:'porteiro',
@@ -35,5 +35,22 @@ module.exports = function(sequelize, DataTypes) {
 
 module.exports.initRelations = function() {
     delete module.exports.initRelations; 
+
+    var dataContext = require('../dao');
+    var Porteiro = dataContext.Porteiro;
+    var Pessoa = dataContext.Pessoa;
+    var Usuario = dataContext.Usuario;    
+
+    Porteiro.belongsTo(Pessoa, {
+        foreignKey: 'pessoa_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
+
+    Porteiro.belongsTo(Usuario, {
+        foreignKey: 'usuario_id',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION'
+    });
 };
 

@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
             }
         },
         tipo: {
-            type: DataTypes.SMALLINT,
+            type: DataTypes.INTEGER,
             field: 'tipo',
             allowNull: false,
             comment: 'Tipo da pessoa'
