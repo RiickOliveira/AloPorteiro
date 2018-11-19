@@ -32,7 +32,7 @@ function carregaPorId(req,res) {
 
         delete porteiro.pessoa_id;
         delete porteiro.usuario_id;
-        
+
         //Por padrão retorna o status
         res.status(200).json({
 			sucesso: true,
@@ -79,8 +79,7 @@ function salvaPorteiro(req,res){
        //variavel para receber o usuario criado devido ao "Clojure"
        let resposta;
    
-       dataContext.Usuario.create(usuario)
-       .then(function(novoUsuario){     
+       dataContext.Usuario.create(usuario).then(function(novoUsuario){     
            respostaUsuario = novoUsuario;
            return dataContext.Pessoa.create(pessoa)
        })
@@ -109,7 +108,7 @@ function salvaPorteiro(req,res){
        })
    }
 
-function excluiUsuario(req,res){
+function excluiPorteiro(req,res){
 	if (!req.params.id) {
 		res.status(409).json({sucesso: false, msg: "Formato de entrada inválido."})
 		return;
@@ -139,49 +138,67 @@ function excluiUsuario(req,res){
 	
 }
 
-function atualizaUsuario(req,res){
+function atualizaPorteiro(req,res){
 	
 	if (!req.params.id) {
 		res.status(409).json({sucesso : false, msg: "Formato de entrada inválido."})
 		return;
 	}
 
-	let usuario = req.body.usuario;
+    
+    let porteiro = req.body.porteiro;   
+    let port = req.body.porteiro;
+   
 
-	if (!usuario) {
+	if (!porteiro) {
 		res.status(409).json({sucesso : false, msg: "Formato de entrada inválido."})
 		return;
 	}
 
 
-	dataContext.Usuario.findById(req.params.id).then(function(usuario){
+	dataContext.Porteiro.findById(req.params.id).then(function(porteiro){
 		
-		if (!usuario) {
-			res.status(404).json({sucesso: false, msg: "Pessoa não encontrada."})
+		if (!porteiro) {
+			res.status(404).json({sucesso: false, msg: "Porteiro não encontrada."})
 			return;
-		}
-		
-		let updateFields = {
-			email  : usuario.email,
-			tipo   : usuario.tipo,
-			senha  : usuario.senha,			
-		}
+        }
+        return dataContext.Pessoa.findById(porteiro.pessoaId).then(function(pessoa){        
+        
+        
+            let updateFields = {
+               
+                nome                : port.pessoa.nome,
+                cpf                 : port.pessoa.cpf,
+                nascimento          : port.pessoa.nascimento,
+                enderecoLogradouro  : port.pessoa.enderecoLogradouro,
+                enderecoNumero      : port.pessoa.enderecoNumero,
+                enderecoBairro      : port.pessoa.enderecoBairro,
+                enderecoCidade      : port.pessoa.enderecoCidade,
+                enderecoUf          : port.pessoa.enderecoUf,
+        
+            }        
+        
+		pessoa.update(updateFields).then(function(){
+            
+            return dataContext.Usuario.findById(porteiro.usuarioId).then(function(usuario){ 
+                
+                let updateUsuario = {               
+                    email                : port.usuario.email,
+                    senha                 : port.usuario.senha,
+                }
 
-		usuario.update(updateFields)
-		.then(function(usuarioAtualizado){
-			res.status(200).json({
-        		sucesso: true,
-        		msg: "Registro atualizado com sucesso",
-        		data: usuarioAtualizado
-        	})	
+                usuario.update(updateUsuario).then(function(portAtualizado){
+                    res.status(200).json({sucesso: true, msg: "Porteiro atualizado.",data:portAtualizado})
+                })
+            })
 		})
-		.catch(function(erro){
-			console.log(erro);
-			res.status(409).json({sucesso: false, msg: "Falha ao atualizar a pessoa" });	
-		})
-
 	})
 	
+        }).catch(function(erro){
+            console.log(erro);
+            res.status(409).json({ sucesso: false, msg: "Falha ao excluir porteiro" });	
+     })
+
 }
 
 
@@ -189,6 +206,6 @@ module.exports = {
     carregaTudo  	: carregaTudo,
     carregaPorId 	: carregaPorId,
     salva 			: salvaPorteiro,
-    exclui 			: excluiUsuario,
-    atualiza 		: atualizaUsuario    
+    exclui 			: excluiPorteiro,
+    atualiza 		: atualizaPorteiro    
 }
