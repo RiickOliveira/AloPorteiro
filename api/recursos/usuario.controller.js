@@ -1,14 +1,13 @@
-const dataContext = require('../dao/dao'),
-	util = require('../util/util');
+let dataContext = require('../dao/dao');
 
 function carregaTudo(req,res) {
     
-    return dataContext.Pessoa.findAll({
+    return dataContext.Usuario.findAll({
     	order : 'id'
-    }).then(function(pessoas){
+    }).then(function(usuarios){
         res.status(200).json({
 			sucesso : true,
-			data : pessoas
+			data : usuarios
 		})
     })
 }    
@@ -16,55 +15,53 @@ function carregaTudo(req,res) {
 
 function carregaPorId(req,res) {
     
-    return dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
+    return dataContext.Usuario.findById(req.params.id).then(function(usuarios){
         res.status(200).json({
 			sucesso : true,
-			data : pessoa
+			data : usuarios
 		})
     })
 
 
 } 
 
-function salvaPessoa(req,res){
+function salvaUsuario(req,res){
 	
-	let pessoa = req.body.pessoa;
+	let usuario = req.body.usuario;
 
-	
+	usuario.criacao = new Date();
+	usuario.desativado = false;
 
-	pessoa.criacao = new Date();
-	pessoa.digital = util.geraDigital();
-
-	if (!pessoa) {
+	if (!usuario) {
 		res.status(409).json({sucesso: false, msg: "Formato de entrada inválido."})
 		return;
 	}
 
 	
-	dataContext.Pessoa.create(pessoa)
-	.then(function(novaPessoa){
-		res.status(201).json({sucesso: true, data: novaPessoa})
+	dataContext.Usuario.create(usuario)
+	.then(function(novoUsuario){
+		res.status(201).json({sucesso: true, data: novoUsuario})
 	})
 	.catch(function(erro){
 		console.log(erro);
-		res.status(409).json({ sucesso: false, msg: "Falha ao incluir a nova pessoa" });
+		res.status(409).json({ sucesso: false, msg: "Falha ao incluir a novo usuario" });
 	})
 }
 
-function excluiPessoa(req,res){
+function excluiUsuario(req,res){
 	if (!req.params.id) {
 		res.status(409).json({sucesso: false, msg: "Formato de entrada inválido."})
 		return;
 	}
 
-	dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
+	dataContext.Usuario.findById(req.params.id).then(function(usuario){
         
-		if (!pessoa) {
+		if (!usuario) {
 			res.status(404).json({sucesso: false, msg: "Pessoa não encontrada."})
 			return;
 		}
 
-		pessoa.destroy()
+		usuario.destroy()
 		.then(function(){
 			res.status(200).json({
         		sucesso: true,
@@ -81,44 +78,40 @@ function excluiPessoa(req,res){
 	
 }
 
-function atualizaPessoa(req,res){
+function atualizaUsuario(req,res){
 	
 	if (!req.params.id) {
 		res.status(409).json({sucesso : false, msg: "Formato de entrada inválido."})
 		return;
 	}
 
-	let pessoa = req.body.pessoa;
+	let usuario = req.body.usuario;
 
-	if (!pessoa) {
+	if (!usuario) {
 		res.status(409).json({sucesso : false, msg: "Formato de entrada inválido."})
 		return;
 	}
 
 
-	dataContext.Pessoa.findById(req.params.id).then(function(pessoa){
+	dataContext.Usuario.findById(req.params.id).then(function(usuario){
 		
-		if (!pessoa) {
+		if (!usuario) {
 			res.status(404).json({sucesso: false, msg: "Pessoa não encontrada."})
 			return;
 		}
 		
 		let updateFields = {
-			nome  : pessoa.nome,
-			nascimento : pessoa.nascimento,
-			enderecoLogradouro : pessoa.endereco.logradouro,
-			enderecoNumero : pessoa.endereco.numero,
-			enderecoBairro : pessoa.endereco.bairro,
-			enderecoCidade : pessoa.endereco.cidade,
-			enderecoUf 	   : pessoa.endereco.uf,
+			email  : usuario.email,
+			tipo   : usuario.tipo,
+			senha  : usuario.senha,			
 		}
 
-		pessoa.update(updateFields)
-		.then(function(pessoaAtualizada){
+		usuario.update(updateFields)
+		.then(function(usuarioAtualizado){
 			res.status(200).json({
         		sucesso: true,
         		msg: "Registro atualizado com sucesso",
-        		data: pessoaAtualizada
+        		data: usuarioAtualizado
         	})	
 		})
 		.catch(function(erro){
@@ -134,7 +127,7 @@ function atualizaPessoa(req,res){
 module.exports = {
     carregaTudo  	: carregaTudo,
     carregaPorId 	: carregaPorId,
-    salva 			: salvaPessoa,
-    exclui 			: excluiPessoa,
-    atualiza 		: atualizaPessoa    
+    salva 			: salvaUsuario,
+    exclui 			: excluiUsuario,
+    atualiza 		: atualizaUsuario    
 }

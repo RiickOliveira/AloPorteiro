@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             field: 'tipo',
             allowNull: false,
-            comment: 'Tipo da pessoa'
+            comment: 'Tipo da pessoa(ADMINISTRADOR,CONDOMINO,PORTEIRO)'
         },
         senha: {
             type: DataTypes.STRING(32),
@@ -36,15 +36,15 @@ module.exports = function(sequelize, DataTypes) {
         },
         desativado: {
             type: DataTypes.BOOLEAN,
-            field: 'tipo',
+            field: 'desativado',
             allowNull: false,
             comment: 'Tipo da pessoa'
         },
         criacao: {
             type: DataTypes.DATE,
-            field: 'tipo',
+            field: 'criacao',
             allowNull: false,
-            comment: 'Tipo da pessoa'
+            comment: 'data da criacao'
         }
 
     }, 
