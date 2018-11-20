@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
             autoIncrement: true,
             comment: 'Chave primaria'
         },
-        condominId: {
+        condominoId: {
             type: DataTypes.INTEGER,
             field: 'condomino_id',
             allowNull: false,
@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
         condominoObservacao: {
             type: DataTypes.STRING(120),
             field: 'condomino_observacao',
-            allowNull: false,
+            allowNull: true,
             validate: {
                 len : {
                     args : [0,120],
@@ -63,7 +63,7 @@ module.exports = function(sequelize, DataTypes) {
         portariaDataHoraChegada: {
             type: DataTypes.DATE,
             field: 'portaria_data_hora_chegada',
-            allowNull: false,
+            allowNull: true,
         },
         porteiroId: {
             type: DataTypes.INTEGER,
@@ -73,7 +73,7 @@ module.exports = function(sequelize, DataTypes) {
         portariaObservacao: {
             type: DataTypes.STRING(120),
             field: 'portaria_observacao',
-            allowNull: false,
+            allowNull: true,
             validate: {
                 len : {
                     args : [0,120],

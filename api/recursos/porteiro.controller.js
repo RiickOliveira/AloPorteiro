@@ -16,6 +16,7 @@ function carregaTudo(req,res) {
 
 function carregaPorId(req,res) {
     //req.param.id porque passei na URL
+
     return dataContext.Porteiro.findById(req.params.id,{
         include : [
             {
@@ -70,8 +71,8 @@ function salvaPorteiro(req,res){
    
     if (!porteiro) {
      res.status(404).json({
-      sucesso: false, 
-      msg: "Formato de entrada inválido."
+        sucesso: false, 
+        msg: "Formato de entrada inválido."
      })
      return;
     }    
@@ -95,6 +96,7 @@ function salvaPorteiro(req,res){
            
            res.status(201).json({
                sucesso : true,
+               msg : "Porteiro incluido com exito",
                data : resposta
            })
        })
@@ -109,33 +111,35 @@ function salvaPorteiro(req,res){
    }
 
 function excluiPorteiro(req,res){
-	if (!req.params.id) {
+    
+    if (!req.params.id) {
 		res.status(409).json({sucesso: false, msg: "Formato de entrada inválido."})
 		return;
 	}
 
-	dataContext.Usuario.findById(req.params.id).then(function(usuario){
+	dataContext.Porteiro.findById(req.params.id).then(function(porteiro){
         
-		if (!usuario) {
-			res.status(404).json({sucesso: false, msg: "Pessoa não encontrada."})
+		if (!porteiro) {
+			res.status(404).json({sucesso: false, msg: "Porteiro não encontrado."})
 			return;
-		}
-
-		usuario.destroy()
-		.then(function(){
-			res.status(200).json({
-        		sucesso: true,
-        		msg: "Registro excluído com sucesso",
-        		data: []
-        	})	        	
-		})
-		.catch(function(erro){
-			console.log(erro);
-			res.status(409).json({ sucesso: false, msg: "Falha ao excluir a pessoa" });	
-		})
-
+        }
+        return dataContext.Usuario.findById(porteiro.usuarioId).then(function(usuario){
+            usuario.destroy()
+            .then(function(){
+                return dataContext.Pessoa.findById(porteiro.pessoaId).then(function(pessoa){ 
+                pessoa.destroy()    	
+            })
+            .then(function(){
+                porteiro.destroy()
+                res.status(200).json({sucesso: true, msg: "Porteiro excluido com sucesso"})
+            })          
+        })    
     })
-	
+    
+    }).catch(function(erro){
+        console.log(erro);
+        res.status(409).json({ sucesso: false, msg: "Falha ao excluir porteiro" });	
+    })
 }
 
 function atualizaPorteiro(req,res){
@@ -144,17 +148,15 @@ function atualizaPorteiro(req,res){
 		res.status(409).json({sucesso : false, msg: "Formato de entrada inválido."})
 		return;
 	}
-
     
     let porteiro = req.body.porteiro;   
     let port = req.body.porteiro;
-   
+  
 
 	if (!porteiro) {
 		res.status(409).json({sucesso : false, msg: "Formato de entrada inválido."})
 		return;
 	}
-
 
 	dataContext.Porteiro.findById(req.params.id).then(function(porteiro){
 		
@@ -162,8 +164,7 @@ function atualizaPorteiro(req,res){
 			res.status(404).json({sucesso: false, msg: "Porteiro não encontrada."})
 			return;
         }
-        return dataContext.Pessoa.findById(porteiro.pessoaId).then(function(pessoa){        
-        
+        return dataContext.Pessoa.findById(porteiro.pessoaId).then(function(pessoa){                
         
             let updateFields = {
                
