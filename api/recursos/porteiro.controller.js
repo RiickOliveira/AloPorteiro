@@ -4,13 +4,34 @@ const dataContext = require('../dao/dao'),
 function carregaTudo(req,res) {
     
     return dataContext.Porteiro.findAll({
-    	order : 'id'
-    }).then(function(porteiros){
+        include : [
+            {
+                model       : dataContext.Usuario,
+                attributes : ['email','desativado']
+            },
+            {
+                model : dataContext.Pessoa
+            }
+        ],           
+        order : 'id'
+    }).then(function(porteiros){        
+
+        porteiros = porteiros.map(function(port){
+           
+            port = port.get({plain : true})
+
+            delete port.pessoa_id;
+            delete port.usuario_id;    
+        
+            return port;
+        });
         res.status(200).json({
 			sucesso : true,
 			data : porteiros
 		})
+       
     })
+    
 }    
 
 
@@ -27,12 +48,7 @@ function carregaPorId(req,res) {
                 model : dataContext.Pessoa
             }
         ]    
-    }).then(function(porteiro){
-        
-        porteiro = porteiro.get({plain : true})
-
-        delete porteiro.pessoa_id;
-        delete porteiro.usuario_id;
+    }).then(function(porteiro){       
 
         //Por padrão retorna o status
         res.status(200).json({

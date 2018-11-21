@@ -20,14 +20,26 @@ function carregaPorId(req,res){
     return dataContext.Visita.findById(req.params.id,{
         include : [
             {
-                model : dataContext.Pessoa
+                model : dataContext.Pessoa,
+                attributes : ['nome','cpf','digital']
             },
             {
                 model : dataContext.Condomino,
-                attributes : ['endereco']
+                attributes : ['endereco'],
+
+                include :{
+                    model : dataContext.Pessoa,
+                    attributes :['nome','digital']
+                }
             },
             {
-                model : dataContext.Porteiro
+                model : dataContext.Porteiro,
+                attributes : ['id'],             
+
+                include :{
+                    model : dataContext.Pessoa,
+                    attributes :['nome']
+                }
             }
         ]
     }).then(function(visita){
@@ -35,7 +47,8 @@ function carregaPorId(req,res){
         visita = visita.get({plain : true})
 
         delete visita.pessoa_id;
-        delete visita.porteiro_id;
+        delete visita.porteiro.pessoa_id;
+        delete visita.porteiro.usuario_id;
         delete visita.condomino_id;
 
         res.status(200).json({
@@ -49,8 +62,14 @@ function salvaVisita(req,res){
 	
 	let visita = req.body.visita;
 
-    visita.dataHoraReserva = new Date();
+    visita.dataHoraReserva = new Date(visita.dataHoraReserva);
+    visita.dataHoraReserva.setHours(visita.dataHoraReserva.getHours() - 6)
+    visita.dataHoraExpiracao = new Date(visita.dataHoraReserva);
+    visita.dataHoraExpiracao.setHours(visita.dataHoraReserva.getHours() + 4)
     visita.portariaDataHoraChegada = null;
+   
+   
+    
 
 	if (!visita) {
 		res.status(409).json({sucesso: false, msg: "Formato de entrada inválido."})
@@ -92,7 +111,6 @@ function atualizaVisita (req,res){
         let updateFields = {
             condominoId             : visita.condominoId,
             pessoaId                : visita.pessoaId,
-            dataHoraReserva         : visita.dataHoraReserva,
             nomeConvidado           : visita.nomeConvidado,
             condominoObservacao     : visita.condominoObservacao,
             dataHoraExpiracao       : visita.dataHoraExpiracao,
