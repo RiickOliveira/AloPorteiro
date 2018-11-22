@@ -4,7 +4,16 @@ const dataContext = require('../dao/dao'),
 function carregaTudo(req,res) {
     
     return dataContext.Condomino.findAll({
-    	order : 'id'
+            include : [
+                {
+                    model       : dataContext.Usuario,
+                    attributes : ['email','desativado']
+                },
+                {
+                    model : dataContext.Pessoa
+                }
+            ],           
+        order : 'id'
     }).then(function(condominos){
         res.status(200).json({
 			sucesso : true,
@@ -50,7 +59,7 @@ function salvaCondomino(req,res){
            usuario = {
                email : condomino.usuario.email,
                senha : condomino.usuario.senha,
-               tipo  : 1,
+               tipo  : 2,
                desativado : false,
                criacao : new Date()
            },

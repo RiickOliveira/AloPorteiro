@@ -23,14 +23,11 @@ function carregaPorId(req,res) {
 		})
     })
 
-
 } 
 
 function salvaPessoa(req,res){
 	
-	let pessoa = req.body.pessoa;
-
-	
+	let pessoa = req.body.pessoa;	
 
 	pessoa.criacao = new Date();
 	pessoa.digital = util.geraDigital();

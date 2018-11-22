@@ -31,7 +31,7 @@ function salvaUsuario(req,res){
 
 	usuario.criacao = new Date();
 	usuario.desativado = false;
-
+	
 	if (!usuario) {
 		res.status(409).json({sucesso: false, msg: "Formato de entrada inválido."})
 		return;

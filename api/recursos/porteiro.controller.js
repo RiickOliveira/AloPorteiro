@@ -62,7 +62,7 @@ function carregaPorId(req,res) {
 
 function salvaPorteiro(req,res){
     //req.body campos do body
-    //Mesma coisa que [FromBody] no C#
+    //Mesma coisa que [FromBody] no C#           
        let porteiro = req.body.porteiro,
            usuario = {
                email : porteiro.usuario.email,

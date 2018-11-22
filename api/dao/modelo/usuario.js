@@ -43,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
         criacao: {
             type: DataTypes.DATE,
             field: 'criacao',
-            allowNull: false,
+            allowNull: true,
             comment: 'data da criacao'
         }
 
