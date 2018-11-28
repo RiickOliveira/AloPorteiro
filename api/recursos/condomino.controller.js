@@ -7,7 +7,7 @@ function carregaTudo(req,res) {
             include : [
                 {
                     model       : dataContext.Usuario,
-                    attributes : ['email','desativado']
+                    attributes : ['email','senha']
                 },
                 {
                     model : dataContext.Pessoa
@@ -55,7 +55,7 @@ function carregaPorId(req,res) {
 function salvaCondomino(req,res){
     //req.body campos do body
     //Mesma coisa que [FromBody] no C#
-       let condomino = req.body.condomino,
+       let condomino = req.body.condomino,  
            usuario = {
                email : condomino.usuario.email,
                senha : condomino.usuario.senha,
@@ -75,8 +75,7 @@ function salvaCondomino(req,res){
                enderecoUf          : condomino.pessoa.enderecoUf,
                criacao             : new Date()
            }
-            
-           
+
    
     if (!condomino) {
      res.status(404).json({
@@ -173,6 +172,13 @@ function atualizaCondomino(req,res){
 			res.status(404).json({sucesso: false, msg: "Condomino não encontrado."})
 			return;
         }
+
+        let updateCondomino = {
+            endereco : cond.endereco
+        }
+
+        condomino.update(updateCondomino).then(function(){
+            
         return dataContext.Pessoa.findById(condomino.pessoaId).then(function(pessoa){                
         
             let updateFields = {
@@ -198,11 +204,16 @@ function atualizaCondomino(req,res){
                 }
 
                 usuario.update(updateUsuario).then(function(condAtualizado){
-                    res.status(200).json({sucesso: true, msg: "Condomino atualizado.",data:condAtualizado})
+                    res.status(200).json({
+                        sucesso: true,
+                        msg: "Condomino atualizado",
+                        data:condAtualizado
+                    })
                 })
             })
 		})
-	})
+    })
+})
 	
         }).catch(function(erro){
             console.log(erro);

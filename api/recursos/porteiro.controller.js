@@ -7,7 +7,7 @@ function carregaTudo(req,res) {
         include : [
             {
                 model       : dataContext.Usuario,
-                attributes : ['email','desativado']
+                attributes : ['email','senha']
             },
             {
                 model : dataContext.Pessoa
@@ -117,8 +117,7 @@ function salvaPorteiro(req,res){
            })
        })
        .catch(function(e){
-           console.log(respostaUsuario)
-           console.log(respostaPessoa)
+           console.log(e)
            res.status(409).json({ 
                sucesso: false,
                msg: "Falha ao incluir o porteiro" 
@@ -205,7 +204,11 @@ function atualizaPorteiro(req,res){
                 }
 
                 usuario.update(updateUsuario).then(function(portAtualizado){
-                    res.status(200).json({sucesso: true, msg: "Porteiro atualizado.",data:portAtualizado})
+                    res.status(200).json({
+                        sucesso: true,
+                        msg: "Porteiro atualizado.",
+                        data:portAtualizado
+                    })
                 })
             })
 		})

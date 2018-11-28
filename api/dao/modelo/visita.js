@@ -52,12 +52,12 @@ module.exports = function(sequelize, DataTypes) {
         dataHoraExpiracao: {
             type: DataTypes.DATE,
             field: 'data_hora_expiracao',
-            allowNull: false,
+            allowNull: true,
         },                
         situacao: {
             type: DataTypes.INTEGER,
             field: 'situacao',
-            allowNull: false,
+            allowNull: true,
             comment: ''
         },
         portariaDataHoraChegada: {
@@ -68,7 +68,7 @@ module.exports = function(sequelize, DataTypes) {
         porteiroId: {
             type: DataTypes.INTEGER,
             field: 'porteiro_id',
-            allowNull: false,
+            allowNull: true,
         },              
         portariaObservacao: {
             type: DataTypes.STRING(120),

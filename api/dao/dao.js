@@ -48,11 +48,12 @@ function init() {
     
     
 	// Modelos
-    model.Usuario = conexao.import('./modelo/usuario.js');
-    model.Porteiro  = conexao.import('./modelo/porteiro.js');
-    model.Condomino  = conexao.import('./modelo/condomino.js');
-    model.Pessoa = conexao.import('./modelo/pessoa.js');
-    model.Visita = conexao.import('./modelo/visita.js');
+    model.Usuario               = conexao.import('./modelo/usuario.js');
+    model.Porteiro              = conexao.import('./modelo/porteiro.js');
+    model.Condomino             = conexao.import('./modelo/condomino.js');
+    model.Pessoa                = conexao.import('./modelo/pessoa.js');
+    model.Visita                = conexao.import('./modelo/visita.js');
+    model.CondominoConvidado    = conexao.import('./modelo/condominoConvidado.js')
 
     // Arquivos
     require('./modelo/condomino.js').initRelations();
@@ -60,6 +61,7 @@ function init() {
     require('./modelo/usuario.js').initRelations(); 
     require('./modelo/pessoa.js').initRelations();  
     require('./modelo/visita.js').initRelations(); 
+    require('./modelo/condominoConvidado.js').initRelations();
 
     return model;
 }

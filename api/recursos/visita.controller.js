@@ -6,6 +6,11 @@ const dataContext = require('../dao/dao'),
 function carregaTudo(req,res){
 
     return dataContext.Visita.findAll({
+        include : [           
+            {
+                model : dataContext.Pessoa
+            }
+        ],          
         order : 'id'
     }).then(function(visitas){
         res.status(200).json({
@@ -63,11 +68,10 @@ function salvaVisita(req,res){
 	let visita = req.body.visita;
 
     visita.dataHoraReserva = new Date(visita.dataHoraReserva);
-    visita.dataHoraReserva.setHours(visita.dataHoraReserva.getHours() - 6)
     visita.dataHoraExpiracao = new Date(visita.dataHoraReserva);
     visita.dataHoraExpiracao.setHours(visita.dataHoraReserva.getHours() + 4)
     visita.portariaDataHoraChegada = null;
-   
+    visita.situacao = 1;   
    
     
 
@@ -102,7 +106,7 @@ function atualizaVisita (req,res){
 		return;
     }
     
-    dataContext.Visita.findById(req.params.id).then(function(visita){
+    dataContext.Visita.findById(req.params.id).then(function(visitaReturnada){
 
         if (!visita){
             res.status(409).json({sucesso : false,msg : "Visita nao encontrada"})
@@ -111,16 +115,17 @@ function atualizaVisita (req,res){
         let updateFields = {
             condominoId             : visita.condominoId,
             pessoaId                : visita.pessoaId,
+            dataHoraReserva         : visita.dataHoraReserva,
             nomeConvidado           : visita.nomeConvidado,
             condominoObservacao     : visita.condominoObservacao,
             dataHoraExpiracao       : visita.dataHoraExpiracao,
             situacao                : visita.situacao,
             portariaDataHoraChegada : visita.portariaDataHoraChegada,
-            portariaObservacao       : visita.portariaObservacao
+            portariaObservacao      : visita.portariaObservacao
         }
 
         console.log(visita)
-        visita.update(updateFields)
+        visitaReturnada.update(updateFields)
         .then(function(visitaAtualizada){
             console.log(visitaAtualizada)
             res.status(200).json({

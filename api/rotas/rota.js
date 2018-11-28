@@ -6,6 +6,7 @@ let usuarioController = require('../recursos/usuario.controller');
 let porteiroController = require('../recursos/porteiro.controller');
 let condominoController = require('../recursos/condomino.controller');
 let visitaController = require('../recursos/visita.controller');
+let convidadoController = require('../recursos/condominoConvidado.controller');
 
 rota.get('/pessoa', pessoaController.carregaTudo);
 rota.get('/pessoa/:id', pessoaController.carregaPorId);
@@ -37,10 +38,11 @@ rota.post('/visita', visitaController.salva)
 rota.delete('/visita/:id',visitaController.exclui)
 rota.put('/visita/:id',visitaController.atualiza)
 
-
-
-
-
+rota.get('/condominoConvidado',convidadoController.carregaTudo)
+rota.get('/condominoConvidado/:id',convidadoController.carregaPorId)
+rota.post('/condominoConvidado', convidadoController.salva)
+rota.delete('/condominoConvidado/:id',convidadoController.exclui)
+rota.put('/condominoConvidado/:id',convidadoController.atualiza)
 
 
 module.exports = rota;

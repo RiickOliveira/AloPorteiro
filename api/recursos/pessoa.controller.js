@@ -2,6 +2,23 @@ const dataContext = require('../dao/dao'),
 	util = require('../util/util');
 
 function carregaTudo(req,res) {
+
+	if (req.query.search) {
+		return dataContext.Pessoa.findAll({			
+		where : {	
+			nome : {
+				$ilike : '%'+req.query.search+'%'
+			}
+		}			
+		}).then(function(pessoas){
+			res.status(200).json({				
+				sucesso : true,
+				data : pessoas
+			})		
+
+		});
+			
+	}
     
     return dataContext.Pessoa.findAll({
     	order : 'id'
