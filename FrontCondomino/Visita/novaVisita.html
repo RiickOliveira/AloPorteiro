@@ -73,7 +73,7 @@
                           <md-tab label="Favoritos">
                             <md-content class="md-padding" layout="row">
                               <div layout="column" ng-repeat="convidados in vm.dsConvidado.data">
-                                <md-card class="md" ng-click="">
+                                <md-card class="md" ng-click="vm.carregaCard(convidados)">
                                     <div layout="row">
                                       <img src="img/convidado.svg" class="md-card-image">
                                       <span class="negrito" style="text-align: center">{{convidados.pessoa.nome}}</span>

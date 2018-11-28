@@ -19,7 +19,7 @@ function visitaListaController($scope,$resource,$mdDialog, $localStorage){
         carregaVisitas();
 
         $localStorage.condomino = {
-            id : 5,
+            id : 8,
             nome : 'Jose Mayer'
         }
     }    
@@ -171,8 +171,8 @@ function visitaController($scope, $resource,$mdDialog, $localStorage){
 
     vm.cancelar = cancelar;
     vm.salvar   = salvar;  
-    vm.carregaNomeConvidado = carregaNomeConvidado; 
     vm.carregaConvidados = carregaConvidados;
+    vm.carregaCard = carregaCard
 
     function carregaConvidados(condominoId){
         vm.dsConvidado = new convidadoApi();
@@ -183,17 +183,10 @@ function visitaController($scope, $resource,$mdDialog, $localStorage){
         })    
     }
 
-    function carregaNomeConvidado(nomeBuscado) {    
-            
-        var dsNomeConvidado = new convidadoApi();
-        return dsNomeConvidado.$get({nome : nomeBuscado}).then(function(nomeConvidado){ 
-            console.log(nomeBuscado)           
-            return vm.dsNomeConvidado = nomeConvidado.data            
-        
-        })    
+    function carregaCard(convidado){
+        vm.query.item = convidado
+        vm.query.text = vm.query.item.pessoa.nome
     }
-
-    
 
 
     function cancelar() {
@@ -208,9 +201,9 @@ function visitaController($scope, $resource,$mdDialog, $localStorage){
         
         let visita = {
             condominoId : $localStorage.condomino.id,
-            pessoaId : vm.query.item.id, 
+            pessoaId : vm.query.item.pessoa.id, 
             dataHoraReserva : vm.dataHoraReserva ,
-            nomeConvidado : vm.nomeConvidado,
+            nomeConvidado : vm.query.item.pessoa.nome,
             condominoObservacao : vm.condominoObservacao,           
         };
             
