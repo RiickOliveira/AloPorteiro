@@ -24,7 +24,7 @@
                     </md-input-container>
                     <md-input-container flex>
                             <label>Hora Reserva</label>
-                            <input  type="time" name="horaReserva" required ng-model="vm.horaReserva"> 
+                            <input type="time" name="horaReserva" required ng-model="vm.horaReserva"  min="00:00" max="23:59"> 
                             <div ng-messages="vm.visitaForm.horaReserva.$error">
                                 <div ng-message="required">Este campo é obrigatório</div>
                             </div>	             
@@ -41,7 +41,7 @@
                         md-no-cache="false"
                         md-selected-item="vm.query.item"
                         md-search-text="vm.query.text"
-                        md-items="convidado in vm.dsConvidado.data"
+                        md-items="convidado in vm.dsConvidado.data | filter: vm.query.text"
                         md-item-text="convidado.pessoa.nome"
                         md-require-match
                         md-floating-label="Visitante">
@@ -61,7 +61,7 @@
                     <img src="./img/list.svg" class="contact">
                     <md-input-container flex>
                         <label>Observaçoes</label>
-                        <input type="observacao" name="observacao" required ng-model="vm.condominoObservacao"> 
+                        <input type="observacao" name="observacao"  ng-model="vm.condominoObservacao"> 
                         <div ng-messages="vm.visitaForm.observacao.$error">
                             <div ng-message="required">Este campo é obrigatório</div>                           
                         </div>                
@@ -73,8 +73,8 @@
                           <md-tab label="Favoritos">
                             <md-content class="md-padding" layout="row">
                               <div layout="column" ng-repeat="convidados in vm.dsConvidado.data">
-                                <md-card class="md" ng-click="vm.carregaCard(convidados)">
-                                    <div layout="row">
+                                <md-card class="md" ng-if="convidados.favorito">
+                                    <div layout="row" ng-click="vm.carregaCard(convidados)" class="cursor">
                                       <img src="img/convidado.svg" class="md-card-image">
                                       <span class="negrito" style="text-align: center">{{convidados.pessoa.nome}}</span>
                                     </div>                                  
@@ -82,9 +82,8 @@
                                       <md-button class="md-icon-button" aria-label="Favorite">
                                         <md-icon md-svg-icon="img/star.svg"></md-icon>
                                       </md-button>
-                                                                          
                                     </md-card-actions>
-                                  </md-card>
+                                </md-card>
                               </div> 
                             </md-content>
                           </md-tab>
@@ -102,8 +101,8 @@
                                                 <div layout="row">
                                                   <span flex></span>
                                                   
-                                                  <md-button class="md-icon-button" ng-click="vm.editaPorteiro($event,porteiro)">
-                                                      <img src="img/pencil-edit-button.png">                      
+                                                  <md-button class="md-icon-button" ng-if="!convidados.favorito">
+                                                      <img src="img/starUn.svg"  style="width: 24;">                      
                                                   </md-button>
                                                   
                                                   <md-menu>
@@ -163,7 +162,7 @@
 
   <script>      
     
-        angular.module('appAloPorteiro', ['ngMaterial', 'ngMessages', 'ngResource','ui.utils.masks']);
+        angular.module('appAloPorteiro', ['ngMaterial', 'ngMessages', 'ngResource','ui.utils.masks','ui.utils.masks.global']);
     
     </script>
 

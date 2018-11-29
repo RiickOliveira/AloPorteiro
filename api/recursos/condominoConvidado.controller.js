@@ -3,15 +3,20 @@ const dataContext = require('../dao/dao'),
 
 function carregaTudo(req,res) {
     
-    if (req.query.search) {
+    if (req.query.condominoId) {
 		return dataContext.CondominoConvidado.findAll({			
             include : [
                 {
-                    model : dataContext.Pessoa
+                    model : dataContext.Pessoa,
+                    where : {
+                        nome : {
+                            $ilike : '%'+req.query.search+'%'
+                        }
+                    }
                 }
             ],   
             where : {	
-                condominoId : req.query.search
+                condominoId : Number(req.query.condominoId)
             }			
 		}).then(function(convidados){
 			res.status(200).json({				
@@ -21,8 +26,7 @@ function carregaTudo(req,res) {
 
 		});
 			
-    }
-    
+    }   
     
     return dataContext.CondominoConvidado.findAll({
         include : [
@@ -114,7 +118,8 @@ function salvaConvidado(req,res){
            respostaPessoa = novaPessoa;
            return dataContext.CondominoConvidado.create({
                condominoId : convidado.condominoId,
-               pessoaId  : respostaPessoa.id 
+               pessoaId  : respostaPessoa.id,
+               favorito : false 
            })
        })
        .then(function(convidado){
@@ -185,7 +190,8 @@ function atualizaConvidado(req,res){
         }
         
         let updateConvidado = {
-            condominoId : conv.condominoId
+            condominoId : conv.condominoId,
+            favorito : conv.favorito
         }
 
         convidado.update(updateConvidado).then(function(){        

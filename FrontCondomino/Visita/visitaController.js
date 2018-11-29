@@ -16,10 +16,10 @@ function visitaListaController($scope,$resource,$mdDialog, $localStorage){
     })
     
     function init(){
-        carregaVisitas();
+        carregaVisitas($localStorage.condomino.id);
 
         $localStorage.condomino = {
-            id : 8,
+            id : 5,
             nome : 'Jose Mayer'
         }
     }    
@@ -34,9 +34,9 @@ function visitaListaController($scope,$resource,$mdDialog, $localStorage){
 
 
 
-    function carregaVisitas(){
+    function carregaVisitas(condominoId){
         vm.visitas = new visitaApi()
-        vm.visitas.$get().then(function(resposta){
+        vm.visitas.$get({where: condominoId}).then(function(resposta){
             console.log(resposta)
             vm.visitas.data = resposta.data
 
@@ -67,9 +67,6 @@ function visitaListaController($scope,$resource,$mdDialog, $localStorage){
                     default:
                         break;
                 }
-            
-               
-                
             })
         })
     } 
@@ -82,7 +79,7 @@ function visitaListaController($scope,$resource,$mdDialog, $localStorage){
             targetEvent: ev            
         }).then(function(novaVisita){
             if (novaVisita) {
-                vm.carregaVisitas()
+                window.location.reload();
             }
         })    
     }
@@ -97,7 +94,7 @@ function visitaListaController($scope,$resource,$mdDialog, $localStorage){
             bindToController : true            
         }).then(function(editaVisita){
             if (editaVisita) {
-                vm.carregaVisitas()
+                window.location.reload();
             }
         })        
     }
@@ -127,7 +124,7 @@ function visitaListaController($scope,$resource,$mdDialog, $localStorage){
             if (resposta.sucesso) {
                 toastr.info('Visita cancelada com sucesso :)');
             }
-            carregaVisitas();
+            window.location.reload();
         }
 
         let erro = function(resposta){

@@ -21,6 +21,12 @@ module.exports = function(sequelize, DataTypes) {
             field: 'pessoa_id',
             allowNull: false,
             comment: 'Pessoa associada ao visitante'
+        },
+        favorito: {
+            type: DataTypes.BOOLEAN,
+            field: 'favorito',
+            allowNull: true,
+            comment: 'Favoritar convidado'
         }        
     }, {
         schema: 'public',

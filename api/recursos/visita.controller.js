@@ -5,13 +5,33 @@ const dataContext = require('../dao/dao'),
 
 function carregaTudo(req,res){
 
+    if (req.query.where){
+        return dataContext.Visita.findAll({
+            include : [           
+                {
+                    model : dataContext.Pessoa
+                }
+            ],          
+            order : 'id',
+            where : {	
+                condominoId : req.query.where
+            }	
+        }).then(function(visitas){
+            res.status(200).json({
+                sucesso : true,
+                data : visitas
+            })
+        })
+    
+    }
+    
     return dataContext.Visita.findAll({
         include : [           
             {
                 model : dataContext.Pessoa
             }
         ],          
-        order : 'id'
+        order : 'id',
     }).then(function(visitas){
         res.status(200).json({
             sucesso : true,
